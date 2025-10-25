@@ -1,0 +1,20 @@
+{
+  "name": "proyectos_react",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Flayted18/Proyectos_React.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Flayted18/Proyectos_React/issues"
+  },
+  "homepage": "https://github.com/Flayted18/Proyectos_React#readme"
+}
