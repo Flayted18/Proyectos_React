@@ -16,5 +16,11 @@
   "bugs": {
     "url": "https://github.com/Flayted18/Proyectos_React/issues"
   },
-  "homepage": "https://github.com/Flayted18/Proyectos_React#readme"
+  "homepage": "https://github.com/Flayted18/Proyectos_React#readme",
+  "dependencies": {
+    "vite": "^7.1.12"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react-swc": "^4.2.0"
+  }
 }

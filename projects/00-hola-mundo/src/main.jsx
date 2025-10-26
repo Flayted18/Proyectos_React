@@ -1,5 +1,4 @@
-import { Fragment, StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import { createRoot } from 'react'
 import { App } from './App'
 
 
