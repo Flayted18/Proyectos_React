@@ -1,9 +1,9 @@
 import {useState} from 'react';
 
 
-export const TwitterFollowCard = ({ userName, name }) => {
+export const TwitterFollowCard = ({ userName, name, initialIsFollowing }) => {
 
-    const [isFollowing, setIsFollowing] = useState(false)
+    const [isFollowing, setIsFollowing] = useState(initialIsFollowing)
 
     const text = isFollowing ? 'Siguiendo' : 'Seguir'
     const buttonClassName = isFollowing 
@@ -29,7 +29,10 @@ export const TwitterFollowCard = ({ userName, name }) => {
 
         <aside>
             <button className={buttonClassName} onClick={handleClick}>
-              {text}
+              <span className='tw-followCard-text'>{text}</span>
+              <span className='tw-follorCard-stopFollow'>
+                Dejar de Seguir
+              </span>
             </button>
         </aside>
     </article>
