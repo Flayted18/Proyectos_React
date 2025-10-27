@@ -1,22 +1,29 @@
-
 import './App.css';
+import { useState } from 'react';
+import { TwitterFollowCard } from './TwitterFollowCard';
 
 export const App = () => {
+
+  
+  
+
   return (
-    
-    <article className=''>
-        <header>
-            <img src="https://unavatar.io/github/Flayted18" alt="Avatar de Flayted18" />
-            <div>
-              <strong>Santiago Faysal</strong>
-              <span>@Flayted18</span>
-            </div>
-        </header>
-        <aside>
-          <button>
-              Seguir
-            </button>
-        </aside>
-    </article>
+    <div className='App' >
+      <TwitterFollowCard 
+        isFollowing
+        userName='Flayted18'
+        name='Santiago Faysal'
+      />
+      <TwitterFollowCard
+        isFollowing
+        userName='midudev'
+        name='MiduDev'
+      />
+      <TwitterFollowCard
+        isFollowing
+        userName='Manuelp1345'
+        name='Manuel Puente'
+      />
+    </div>
   )
 }
