@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/Flayted18/Proyectos_React#readme",
   "dependencies": {
+    "canvas-confetti": "1.9.4",
     "vite": "^7.1.12"
   },
   "devDependencies": {
