@@ -5,6 +5,7 @@ function FollowMouse() {
   const [enabled, setEnabled] = useState(false)
   const [position, setPosition] = useState({x:0, y:0})
 
+  // PointerMove event listener
   useEffect(() => {
     console.log('effect', {enabled})
 
@@ -16,13 +17,19 @@ function FollowMouse() {
     if (enabled) {
       window.addEventListener('pointermove', handleMove)
     }
-
     // Cleanup function. 
     // When the component unmounts 
     return () => {
       window.removeEventListener('pointermove', handleMove)
     }
+  }, [enabled])
 
+  useEffect(() => {
+    document.body.classList.toggle('no-cursor', enabled)
+
+    return () => {
+      document.body.classList.remove('no-cursor')
+    }
   }, [enabled])
 
   return(
@@ -39,7 +46,6 @@ function FollowMouse() {
         width: 40,
         height: 40,
         transform: `translate(${position.x}px, ${position.y}px)`
-        
       }}/>
       <button onClick={()=>setEnabled(!enabled)}>
         {enabled ? "Desactivar" : "Activar"} Seguir Puntero
@@ -49,16 +55,9 @@ function FollowMouse() {
 }
 
 function App() {
-  const [mounted, setMounted] = useState(true)
-
   return (
     <main>
-      {mounted && <FollowMouse />}
-
-      <button onClick={() => setMounted(!mounted)}>
-        toggle FollowMouse component
-      </button>
-      
+      <FollowMouse />
     </main>
   )
 }
