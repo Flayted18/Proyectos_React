@@ -1,17 +1,24 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import confetti from "canvas-confetti"
 
-import { Square } from "./components/Square"
-import { TURNS } from "./constants"
-import { checkWinner } from "./logic/board"
+import { Square } from "./components/Square.jsx"
+import { TURNS } from "./constants.js"
+import { checkEndGame, checkWinner } from "./logic/board.js"
 
-
-
+import { WinnerModal } from "./components/WinnersModal.jsx"
 
 // This is the parent component
 function App() {
-  const [board, setBoard] = useState(Array(9).fill(null))
-  const [turn, setTurn] = useState(TURNS.X)
+  const [board, setBoard] = useState(() =>{
+    const boardFromStorage = window.localStorage.getItem('board')
+    return boardFromStorage 
+    ? JSON.parse(boardFromStorage) 
+    : Array(9).fill(null)
+  })
+  const [turn, setTurn] = useState(() => {
+    const turnFromStorage = window.localStorage.getItem('turn')
+    return turnFromStorage ?? TURNS.X
+  })
   // Null means no winner yet, False means a tie
   const [winner, setWinner] = useState(null)
 
@@ -20,11 +27,12 @@ function App() {
     setBoard(Array(9).fill(null))
     setTurn(TURNS.X)
     setWinner(null)
+
+    window.localStorage.removeItem('board')
+    window.localStorage.removeItem('turn') 
   }
-  const checkEndGame = (newBoard) => {
-    // Check if there are no nulls left in the board
-    return newBoard.every(square => square !== null)
-  }
+
+ 
 
 
   // Here, I'm sending the updateBoard function to the Square component (Child component)
@@ -41,6 +49,10 @@ function App() {
     // Determine the next turn
     const newTurn = (turn === TURNS.X) ? TURNS.O : TURNS.X
     setTurn(newTurn)
+    // Save game
+    window.localStorage.setItem('board', JSON.stringify(newBoard))
+    window.localStorage.setItem('turn', newTurn)
+
     // Check for a winner
     const newWinner = checkWinner(newBoard)
     if (newWinner) {
@@ -51,7 +63,10 @@ function App() {
     }
   }
 
-
+  useEffect(() => {
+    console.log('useEffect')
+  })
+  
 
   return (
     <main className="board">
@@ -81,7 +96,8 @@ function App() {
         </Square> 
 
       </section>
-      
+
+      <WinnerModal resetGame={resetGame} winner={winner}/>
 
     </main>
   )
