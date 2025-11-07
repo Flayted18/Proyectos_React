@@ -10,21 +10,24 @@ export function useMovies({search, sort}){
   const previousSearch = useRef(search)
 
 
-  const getMovies = async () => {
-    if(search === previousSearch.current) return
+  const getMovies = useMemo(() => {
+    return async ({search}) => {
+      if(search === previousSearch.current) return
 
-    try {
-      setLoading(true)
-      setErrorMapping(null)
-      previousSearch.current = search
-      const newMovies = await searchMovies({search})
-      setMovies(newMovies)
-    } catch (e){
-      setErrorMapping(e.message)
-    } finally {
-      setLoading(false)
+      try {
+        setLoading(true)
+        setErrorMapping(null)
+        previousSearch.current = search
+        const newMovies = await searchMovies({search})
+        setMovies(newMovies)
+      } catch (e){
+        setErrorMapping(e.message)
+      } finally {
+        setLoading(false)
+      }
     }
-  }
+  }, [])
+
   const sortedMovies = useMemo(()=>{
     return sort
     ? [...movies].sort((a, b) => a.title.localeCompare(b.title))
