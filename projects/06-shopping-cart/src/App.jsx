@@ -1,5 +1,6 @@
 import './App.css'
-import { Products } from './components/products'
+import { Header } from './components/Header'
+import { Products } from './components/Products.jsx'
 import { products as initialProducts} from "./mocks/products.json"
 
 import { useState } from 'react'
@@ -24,31 +25,14 @@ function App() {
     })
   }
 
-  const handleFilter = (event) =>{
-    console.log(event)
-    // const newFilter = event.target.value
-    // setFilters.category(newFilter)
-
-  }
   const filteredProducts = filterProducts(products)
 
   return (
-    <main>
-      <div>
-          <form className="filter">
-              <input 
-                  type="text" 
-                  placeholder="Filtra aqui"
-                  onSubmit={handleFilter}
-              />
-              <button type='submit' onSubmit={handleFilter}>
-                Filtrar
-              </button>
-          </form>
-      </div>    
+    <>
+      <Header setFilters={setFilters}/>
       <Products products={filteredProducts}/>
 
-    </main>
+    </>
     
   )
 }
