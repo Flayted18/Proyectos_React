@@ -8,5 +8,5 @@ export const useCart = () => {
         throw new Error('useCart must be used within CartProvider')
     }
 
-    return [cart]
+    return cart
 }
