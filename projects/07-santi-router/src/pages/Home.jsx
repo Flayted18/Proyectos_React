@@ -1,6 +1,10 @@
+import { useEffect } from "react"
 import { Link } from "../Link"
 
 export default function HomePage (){
+  useEffect(() => {
+          document.title = `Estás en la Home Page`
+      }, [])
   return (
     <>
       <h1>Home</h1>

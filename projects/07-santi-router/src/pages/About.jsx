@@ -1,6 +1,10 @@
+import { useEffect } from "react"
 import { Link } from "../Link"
 
 export default function AboutPage (){
+  useEffect(() => {
+          document.title = `Estás en la About Page`
+      }, [])
   return (
     <>
       <h1>About</h1>
