@@ -4,7 +4,7 @@ import {match} from 'path-to-regexp'
 import { getCurrentPath } from "./utils"
 
 
-export function Router ({children, routes = [], defaultComponent: DefaultComponent = () => <h4>Error 404</h4> }) {
+export function Router ({children, routes = [], DefaultComponent = () => <h4>Error 404</h4> }) {
   const [currentPath, setCurrentPath] = useState(getCurrentPath())
 
   useEffect(() => {
