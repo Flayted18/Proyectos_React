@@ -1,34 +1,75 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+/* eslint-disable react/react-in-jsx-scope */
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+import { Container, Row, Col, Button, Stack } from 'react-bootstrap';
 import './App.css'
+import { useStore } from './hooks/useStore';
+import { AUTO_LANGUAGE } from './constants';
+import { ArrowsIcon } from './components/Icons';
+import { LanguageSelector } from './components/LanguageSelector';
+import { SectionType } from './types.d';
+import { TextArea } from './components/TextArea';
+
 
 function App() {
-  const [count, setCount] = useState(0)
+  const {fromLanguage, 
+    toLanguage, 
+    interchangeLanguages,
+    setFromLanguage,
+    setToLanguage,
+    fromText,
+    result,
+    setFromText,
+    setResult
+  } = useStore()
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <Container fluid>
+        <h2>Google Translate</h2>
+
+        <Row>
+          <Col xs='auto'>
+            <Stack gap={2}>
+              <LanguageSelector 
+                type={SectionType.From}
+                value={fromLanguage}
+                onChange={setFromLanguage}
+              />
+              <TextArea
+                placeholder='Introducir texto'
+                type={SectionType.From}
+                value={fromText}
+                onChange={setFromText}
+
+              />
+            </Stack>
+          </Col>
+
+          <Col>
+            <Button variant='link' disabled={fromLanguage === AUTO_LANGUAGE} onClick={interchangeLanguages}>
+              <ArrowsIcon />
+            </Button>
+          </Col>
+
+          <Col xs='auto'>
+            <Stack gap={2}>
+              <LanguageSelector
+                type={SectionType.To}
+                value={toLanguage}
+                onChange={setToLanguage}
+              />
+              <TextArea
+                placeholder='Traduccion'
+                type={SectionType.To}
+                value={result}
+                onChange={setResult}
+              />
+            </Stack>
+            
+
+          </Col>
+        </Row>
+    </Container>
   )
 }
 
