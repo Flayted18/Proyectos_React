@@ -5,10 +5,13 @@ import { Container, Row, Col, Button, Stack } from 'react-bootstrap';
 import './App.css'
 import { useStore } from './hooks/useStore';
 import { AUTO_LANGUAGE } from './constants';
-import { ArrowsIcon } from './components/Icons';
+import { ArrowsIcon, ClipboardIconFromTranslator, SpeakerIcon } from './components/Icons';
 import { LanguageSelector } from './components/LanguageSelector';
 import { SectionType } from './types.d';
 import { TextArea } from './components/TextArea';
+import { useEffect } from 'react';
+import { translate } from './services/translate';
+import { useDebounce } from './hooks/useDebounce';
 
 
 function App() {
@@ -20,8 +23,35 @@ function App() {
     fromText,
     result,
     setFromText,
-    setResult
+    setResult,
+    loading
   } = useStore()
+
+  const debouncedText = useDebounce(fromText)
+
+  useEffect(()=> {
+    if (fromText==='' || fromText.length < 2) return
+
+    translate({fromLanguage, toLanguage, text: fromText})
+    .then(result => {
+      if(result == null) return
+      setResult(result)
+    })
+    .catch((error)=> {setResult(`El error es:   ${error}`)} )
+
+  }, [debouncedText, fromLanguage, toLanguage])
+
+  const handleClipboard = () => {
+   navigator.clipboard.writeText(result)
+
+  }
+
+  const handleSpeaker =()=>{
+    const utterance = new SpeechSynthesisUtterance(result)
+    utterance.lang = 'en-US'
+    utterance.rate = 0.8
+    speechSynthesis.speak(utterance)
+  }
 
   return (
     <Container fluid>
@@ -36,7 +66,6 @@ function App() {
                 onChange={setFromLanguage}
               />
               <TextArea
-                placeholder='Introducir texto'
                 type={SectionType.From}
                 value={fromText}
                 onChange={setFromText}
@@ -58,12 +87,26 @@ function App() {
                 value={toLanguage}
                 onChange={setToLanguage}
               />
-              <TextArea
-                placeholder='Traduccion'
-                type={SectionType.To}
-                value={result}
-                onChange={setResult}
-              />
+              <div style={{position: 'relative' }}>
+                <TextArea
+                  loading={loading}
+                  type={SectionType.To}
+                  value={result}
+                  onChange={setResult}
+                />
+                <div style={{position:'absolute', left: 0, bottom: 0, display: 'flex'}}>
+                  <Button 
+                    variant='link' 
+                    onClick={handleClipboard}>
+                    <ClipboardIconFromTranslator />
+                  </Button>
+                  <Button 
+                    variant='link' 
+                    onClick={handleSpeaker}>
+                    <SpeakerIcon />
+                  </Button>
+                </div>
+              </div>
             </Stack>
             
 
