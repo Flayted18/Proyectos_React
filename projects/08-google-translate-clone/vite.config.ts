@@ -4,13 +4,13 @@ import react from '@vitejs/plugin-react-swc'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  server: {
-    proxy: {
-      '/openai': {
-        target: 'https://api.openai.com',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/openai/, ''),
-      }
-    }
-  }
+  // server: {
+  //   proxy: {
+  //     '/openai': {
+  //       target: 'https://api.openai.com',
+  //       changeOrigin: true,
+  //       rewrite: (path) => path.replace(/^\/openai/, ''),
+  //     }
+  //   }
+  // }
 })

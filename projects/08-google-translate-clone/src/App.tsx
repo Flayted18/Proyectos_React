@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col, Button, Stack } from 'react-bootstrap';
 import './App.css'
 import { useStore } from './hooks/useStore';
-import { AUTO_LANGUAGE } from './constants';
+import { AUTO_LANGUAGE, VOICE_FOR_LANGUAGE } from './constants';
 import { ArrowsIcon, ClipboardIconFromTranslator, SpeakerIcon } from './components/Icons';
 import { LanguageSelector } from './components/LanguageSelector';
 import { SectionType } from './types.d';
@@ -48,7 +48,7 @@ function App() {
 
   const handleSpeaker =()=>{
     const utterance = new SpeechSynthesisUtterance(result)
-    utterance.lang = 'en-US'
+    utterance.lang = VOICE_FOR_LANGUAGE[toLanguage]
     utterance.rate = 0.8
     speechSynthesis.speak(utterance)
   }
