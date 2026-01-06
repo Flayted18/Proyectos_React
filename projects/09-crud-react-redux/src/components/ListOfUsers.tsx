@@ -37,16 +37,16 @@ export default function ListOfUsers() {
 
         <TableBody>
           {users.map((item) => (
-              <TableRow key={item.name}>
-              <TableCell>{item.id}</TableCell>
-              <TableCell style={{display:'flex', alignItems: 'center'}}>
+              <TableRow key={`${item.id}-${item.name}`}>
+              <TableCell style={{maxWidth: '100px' , whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{item.id}</TableCell>
+              <TableCell style={{display:'flex', alignItems: 'center', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>
                 <img 
                   style={{width: "32px", height: '32px', borderRadius:'8px', marginRight:'8px' }} 
                   src={`https://unavatar.io/github/${item.github}`} 
                   alt={`Foto de perfil de ${item.name}`} />
                 {item.name}
                 </TableCell>
-              <TableCell>{item.email}</TableCell>
+              <TableCell style={{whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{item.email}</TableCell>
               <TableCell>
 
                 <button>
