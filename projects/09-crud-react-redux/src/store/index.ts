@@ -1,5 +1,5 @@
 import {configureStore, type Middleware, type UnknownAction} from '@reduxjs/toolkit'
-import userReducer, { rollbackUser }  from './users/slice'
+import userReducer, { rollbackUser, type UserWithId }  from './users/slice'
 import { toast } from 'sonner';
 
 const persistanceLocalStorage: Middleware = (store) => (next) => (action) => {
@@ -47,6 +47,12 @@ const syncWithDatabase: Middleware = (store) => (next) => (action) => {
         }
     }
 
+    if (type === 'users/updateUser'){
+        const updatedUser = payload as UserWithId
+        const userId = updatedUser.id
+
+        toast.success(`Usuario: ${userId} actualizado correctamente`)
+    }
 }
 
 export const store = configureStore({
