@@ -1,16 +1,14 @@
 /* eslint-disable react/react-in-jsx-scope */
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useMemo, useState } from 'react'
 import './App.css'
-
 import { UsersList } from './components/UsersList'
-import { SortBy, type User } from './types.d'
+import { SortBy } from './types.d'
+import { useUsers } from './hooks/useUsers'
 
 function App() {
-
-  const [users, setUsers] = useState<User[]>([])
+  const { users, isLoading, isError, refetch, fetchNextPage, hasNextPage, removeUser } = useUsers()
   const [showColors, setShowColors] = useState(false)
   const [sorting, setSorting] = useState<SortBy>(SortBy.NONE)
-  const originalUsers = useRef<User[]>([])
   const [filterCountry, setFilterCountry] = useState<string | null>(null)
 
   const toggleColors = () => {
@@ -23,27 +21,15 @@ function App() {
   }
 
   const handleDelete = (id: string) => {
-    const filteredUsers = [...users].filter((user) => user.id.value === null ? user.login.uuid : user.id.value !== id)
-    setUsers(filteredUsers)
+    removeUser(id)
   }
 
-  const handleRestore = () => {
-    setUsers(originalUsers.current)
+  const handleRestore = async () => {
+    await refetch()
   }
   const handleChangeSort = (sort: SortBy) => {
     setSorting(sort)
   }
-  useEffect(() => {
-    fetch('https://randomuser.me/api?results=100')
-      .then(res => res.json())
-      .then(res => {
-        setUsers(res.results)
-        originalUsers.current = res.results
-      })
-      .catch(err => {
-        console.error(err)
-      })
-  }, [])
 
   const filteredUsers = useMemo(() => {
     console.log('filteredUsers')
@@ -74,12 +60,14 @@ function App() {
       )
     }
 
+
     return filteredUsers
   }, [filteredUsers, sorting])
 
   return (
     <div className='App'>
       <h1>Prueba tecnica 55k</h1>
+
 
       <header>
         <button onClick={toggleColors} >Colorear Filas</button>
@@ -89,11 +77,14 @@ function App() {
       </header>
 
       <main>
-        <UsersList changeSorting={handleChangeSort} deleteUser={handleDelete} showColors={showColors} users={sortedUsers} />
-      </main>
+        {users.length > 0 && <UsersList changeSorting={handleChangeSort} deleteUser={handleDelete} showColors={showColors} users={sortedUsers} />}
 
+        {isLoading && <p>Cargando...</p>}
+        {isError && <p>Error al cargar los usuarios</p>}
+        {!isLoading && !isError && users.length === 0 && <p>No hay usuarios</p>}
+        {!isLoading && !isError && hasNextPage && <button onClick={() => { void fetchNextPage() }}>Cargar más resultados</button>}
+      </main>
     </div>
   )
-
 }
 export default App
