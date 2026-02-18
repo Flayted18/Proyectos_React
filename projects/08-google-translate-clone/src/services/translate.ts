@@ -2,13 +2,14 @@
 import { SUPPORTED_LANGUAGES } from "../constants";
 import type { FromLanguage, Language } from "../types.d";
 
-const geminiApikey = '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'
+const ApiKey = 'Put your OpenRouter ApiKey here. The LLM used is arcee-ai/trinity-mini:free.'
 
 export async function translate({
     fromLanguage,
     toLanguage,
     text
-}:{ fromLanguage: FromLanguage,
+}: {
+    fromLanguage: FromLanguage,
     toLanguage: Language,
     text: string
 }) {
@@ -50,28 +51,28 @@ export async function translate({
 
 
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-    method: "POST",
-    headers: {
-            "Authorization": `Bearer ${geminiApikey}`,
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${ApiKey}`,
             "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-        "model": "arcee-ai/trinity-mini:free",
-        "messages": [
-            ...messages,
-            {
-                "role": "user",
-                "content": `El texto a traducir es: ${text}.    Este es el idioma en el que viene: {{${fromCode}}}. Y este es el idioma al que lo traduciras: [[${toCode}]]. Solo devuelve la traduccion, mas nada.`
-            }
-        ],
-        "reasoning": {"enabled": true}
-    })
-});
+        },
+        body: JSON.stringify({
+            "model": "arcee-ai/trinity-mini:free",
+            "messages": [
+                ...messages,
+                {
+                    "role": "user",
+                    "content": `El texto a traducir es: ${text}.    Este es el idioma en el que viene: {{${fromCode}}}. Y este es el idioma al que lo traduciras: [[${toCode}]]. Solo devuelve la traduccion, mas nada.`
+                }
+            ],
+            "reasoning": { "enabled": true }
+        })
+    });
 
 
-const result = await response.json();
-// console.log(result)
-return result.choices[0]?.message?.content;
+    const result = await response.json();
+    // console.log(result)
+    return result.choices[0]?.message?.content;
 
     // const completion = await client.chat.completions.create({
     //     model: 'gpt-3.5-turbo',
@@ -85,5 +86,5 @@ return result.choices[0]?.message?.content;
     // })
 
     // return completion.choices[0]?.message?.content
-    
+
 }
